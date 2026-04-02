@@ -38,6 +38,16 @@ grep -rn "unwrap()\|expect(\|\[.*\]\|/ " programs/*/src/
 grep -rn "pyth\|switchboard\|oracle\|price" programs/*/src/
 # §17 Upgradeability
 grep -rn "upgrade\|set_authority\|BpfLoaderUpgradeable" programs/*/src/
+# §22 Token-2022 extensions — transfer hooks, fees, permanent delegate
+grep -rn "token_2022\|Token2022\|spl_token_2022\|TokenInterface\|transfer_hook\|transfer_fee\|permanent_delegate" programs/*/src/
+# §23 Compute exhaustion — unbounded loops, Vec in on-chain state
+grep -rn "remaining_accounts\|Vec<" programs/*/src/ | grep -v "test\|//"
+# §23 CPI inside loops
+grep -rn "invoke\|invoke_signed" programs/*/src/ -B5 | grep "for\|while\|loop"
+# §24 Instruction introspection — sysvar validation
+grep -rn "load_instruction_at\|sysvar::instructions\|Instructions" programs/*/src/
+# §25 Clock/slot reliance — time-sensitive logic
+grep -rn "Clock::get\|unix_timestamp\|clock\.slot\|deadline\|end_time\|cooldown\|expir" programs/*/src/
 ```
 
 ## Vulnerability classes at a glance
@@ -65,15 +75,25 @@ grep -rn "upgrade\|set_authority\|BpfLoaderUpgradeable" programs/*/src/
 | 19 | Supply chain / social eng. | VARIES | Are dependencies audited? Secrets in client code? | No |
 | 20 | Private key compromise | CRITICAL | Are privileged keys on hot wallets? Single points of failure? | No |
 | 21 | Timelock / governance | HIGH | Can admin actions execute instantly without delay? | No |
+| 22 | Token-2022 extensions | HIGH-CRIT | Does the program handle transfer hooks, fees, permanent delegate, CPI guard? | No |
+| 23 | Compute budget exhaustion | MED-HIGH | Can an attacker make a critical ix exceed the CU limit? | No |
+| 24 | Instruction introspection spoofing | CRITICAL | Is the Instructions sysvar validated? Is program ID + data fully checked? | No |
+| 25 | Clock/slot reliance | LOW-MED | Does time-sensitive logic trust validator-reported timestamps? | No |
 
 ## Priority order by program type
 
-**DeFi / handles tokens:** §1 → §6 → §3 → §10 → §16 → §4 → §7 → §8 → §20 → §21
+**DeFi / handles tokens:** §1 → §6 → §22 → §3 → §10 → §16 → §4 → §7 → §8 → §20 → §21
+
+**DeFi accepting arbitrary mints:** §22 → §6 → §1 → §3 → §10 → §16 → §23
 
 **Governance / DAO:** §1 → §20 → §21 → §4 → §17 → §8 → §3
 
 **NFT / metaplex:** §1 → §2 → §4 → §6 → §5 → §3
 
-**Native (non-Anchor):** §1 → §2 → §5 → §3 → §4 → §12 → §10 → §7
+**Native (non-Anchor):** §1 → §2 → §5 → §3 → §4 → §24 → §12 → §10 → §7
+
+**Uses instruction introspection:** §24 → §1 → §3 → §5
+
+**Auctions / vesting / time-locked:** §25 → §1 → §23 → §20 → §10
 
 **Any program with admin keys:** §20 → §21 → §1 → §17

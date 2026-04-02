@@ -54,7 +54,7 @@ Read `references/cheatsheet.md` FIRST for a condensed overview. Only read full r
 references/
 ├── cheatsheet.md              # Condensed lookup table — read FIRST
 ├── audit-workflow.md          # Full step-by-step procedure
-├── vulnerability-taxonomy.md  # 21 vuln classes with code, detection, severity
+├── vulnerability-taxonomy.md  # 25 vuln classes with code, detection, severity
 ├── svm-runtime-model.md       # SVM internals, memory, accounts, CPI mechanics
 ├── rust-solana-pitfalls.md    # Integer math, borrows, unsafe, panics
 ├── crypto-primitives.md       # Ed25519, SHA-256, PDAs, ZK (Groth16, PLONK, STARKs)
@@ -122,6 +122,10 @@ Read `references/vulnerability-taxonomy.md`. Check every instruction against eac
 | VARIES | Upgradeability risks | §17 |
 | VARIES | Cross-program trust assumptions | §18 |
 | VARIES | Social engineering / supply chain | §19 |
+| HIGH-CRIT | Token-2022 extension incompatibility | §22 |
+| MEDIUM-HIGH | Compute budget exhaustion | §23 |
+| CRITICAL | Instruction introspection spoofing | §24 |
+| LOW-MED | Clock/slot reliance | §25 |
 
 ### Phase 3 — Deep analysis
 
@@ -158,13 +162,17 @@ Use `assets/audit-report-template.md`. Each finding follows:
 
 - Anchor code → vulnerability taxonomy is primary weapon
 - Native (non-Anchor) → also read svm-runtime-model.md for raw account validation
-- Handles tokens → always check §6 even if other checks pass
+- Handles tokens → always check §6 and §22 even if other checks pass
+- Accepts arbitrary mints → always check §22 (Token-2022 extensions)
 - Uses CPIs → always check §3, §7, §18
 - Uses oracles/price feeds → always check §16
 - Has admin/governance instructions → priority targets (§1, §17, §20, §21)
 - Uses ZK proofs → read crypto-primitives.md §4-§7
 - Has privileged keys (admin, minter, operator) → always check §20, §21
 - Protocol with TVL → always assess upgrade authority, timelock, and key management
+- Uses instruction introspection (sysvar::instructions) → always check §24
+- Has time-dependent logic (vesting, auctions, cooldowns) → check §25
+- Has unbounded loops or accepts remaining_accounts → check §23
 - Client/frontend in scope → check §19 (supply chain, secret leakage)
 
 ## Output standards

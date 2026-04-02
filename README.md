@@ -7,7 +7,7 @@ A Claude Code skill that turns your AI assistant into a Solana smart contract se
 When you ask Claude Code to audit a Solana program, this skill activates and provides:
 
 - **Structured audit workflow** — five phases from reconnaissance to report generation
-- **Vulnerability taxonomy** — 21 vulnerability classes covering account validation, CPI safety, PDA security, integer math, oracle manipulation, and more
+- **Vulnerability taxonomy** — 25 vulnerability classes covering account validation, CPI safety, PDA security, Token-2022, integer math, oracle manipulation, and more
 - **SVM runtime model** — deep reference on Solana's account model, CPI mechanics, and runtime constraints
 - **Exploit case studies** — real-world exploits mapped to vulnerability classes
 - **Testing and fuzzing** — harness templates for Trident, LiteSVM, Mollusk, and proptest
@@ -81,7 +81,7 @@ solana-auditor/
 ├── references/
 │   ├── cheatsheet.md                 # Condensed lookup table — read first
 │   ├── audit-workflow.md             # Step-by-step audit procedure
-│   ├── vulnerability-taxonomy.md     # 21 vulnerability classes with detection patterns
+│   ├── vulnerability-taxonomy.md     # 25 vulnerability classes with detection patterns
 │   ├── svm-runtime-model.md          # SVM internals, accounts, CPI mechanics
 │   ├── rust-solana-pitfalls.md       # Rust-specific edge cases in Solana
 │   ├── crypto-primitives.md          # Ed25519, SHA-256, PDAs, ZK proofs
@@ -120,6 +120,10 @@ solana-auditor/
 | VARIES | Upgradeability risks |
 | VARIES | Cross-program trust assumptions |
 | VARIES | Social engineering / supply chain |
+| HIGH-CRIT | Token-2022 extension incompatibility |
+| MEDIUM-HIGH | Compute budget exhaustion |
+| CRITICAL | Instruction introspection spoofing |
+| LOW-MED | Clock/slot reliance |
 
 ## Security & Trust
 
