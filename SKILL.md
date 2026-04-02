@@ -53,8 +53,17 @@ Read `references/cheatsheet.md` FIRST for a condensed overview. Only read full r
 ```
 references/
 ├── cheatsheet.md              # Condensed lookup table — read FIRST
+├── vulnerability-taxonomy.md  # Index → points to per-topic files below
+├── vulnerabilities/
+│   ├── critical-account-validation.md  # §1-§5: signer, discriminator, CPI, PDA, owner
+│   ├── critical-key-infrastructure.md  # §20-§21: key mgmt, timelocks, governance
+│   ├── high-token-state.md             # §6-§9, §22: tokens, stale CPI, Token-2022
+│   ├── medium-arithmetic-memory.md     # §10-§15: overflow, casting, close, panic
+│   ├── economic-oracle.md              # §16: oracle, flash loans, slow poisoning
+│   ├── upgradeability-trust.md         # §17-§18: upgrades, cross-program trust
+│   ├── supply-chain-social.md          # §19: dependencies, insider, phishing
+│   └── runtime-compute.md             # §23-§25: compute, introspection, clock
 ├── audit-workflow.md          # Full step-by-step procedure
-├── vulnerability-taxonomy.md  # 25 vuln classes with code, detection, severity
 ├── svm-runtime-model.md       # SVM internals, memory, accounts, CPI mechanics
 ├── rust-solana-pitfalls.md    # Integer math, borrows, unsafe, panics
 ├── crypto-primitives.md       # Ed25519, SHA-256, PDAs, ZK (Groth16, PLONK, STARKs)

@@ -1,7 +1,7 @@
 # Vulnerability Cheatsheet
 
 Condensed lookup table. Read this FIRST before diving into full references.
-For details on any class, see `vulnerability-taxonomy.md` at the corresponding section.
+For details on any class, see the corresponding file in `vulnerabilities/`.
 
 ## Quick-scan grep commands
 

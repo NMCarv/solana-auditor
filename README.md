@@ -80,8 +80,17 @@ solana-auditor/
 ├── SKILL.md                          # Skill definition and workflow
 ├── references/
 │   ├── cheatsheet.md                 # Condensed lookup table — read first
+│   ├── vulnerability-taxonomy.md     # Index pointing to per-topic files
+│   ├── vulnerabilities/
+│   │   ├── critical-account-validation.md   # §1-§5
+│   │   ├── critical-key-infrastructure.md   # §20-§21
+│   │   ├── high-token-state.md              # §6-§9, §22
+│   │   ├── medium-arithmetic-memory.md      # §10-§15
+│   │   ├── economic-oracle.md               # §16
+│   │   ├── upgradeability-trust.md          # §17-§18
+│   │   ├── supply-chain-social.md           # §19
+│   │   └── runtime-compute.md              # §23-§25
 │   ├── audit-workflow.md             # Step-by-step audit procedure
-│   ├── vulnerability-taxonomy.md     # 25 vulnerability classes with detection patterns
 │   ├── svm-runtime-model.md          # SVM internals, accounts, CPI mechanics
 │   ├── rust-solana-pitfalls.md       # Rust-specific edge cases in Solana
 │   ├── crypto-primitives.md          # Ed25519, SHA-256, PDAs, ZK proofs
