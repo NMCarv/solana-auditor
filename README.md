@@ -15,7 +15,13 @@ When you ask Claude Code to audit a Solana program, this skill activates and pro
 
 ## Installation
 
-### Quick install (Claude Code)
+### Claude Code plugin (recommended)
+
+```
+/plugin install NMCarv/solana-auditor
+```
+
+### Quick install (script)
 
 ```bash
 git clone https://github.com/NMCarv/solana-auditor.git
@@ -69,8 +75,11 @@ This checks for required tools (Rust, Solana CLI, Anchor, cargo-audit, Trident),
 
 ```
 solana-auditor/
+├── .claude-plugin/
+│   └── plugin.json                   # Plugin metadata (name, version, author)
 ├── SKILL.md                          # Skill definition and workflow
 ├── references/
+│   ├── cheatsheet.md                 # Condensed lookup table — read first
 │   ├── audit-workflow.md             # Step-by-step audit procedure
 │   ├── vulnerability-taxonomy.md     # 21 vulnerability classes with detection patterns
 │   ├── svm-runtime-model.md          # SVM internals, accounts, CPI mechanics

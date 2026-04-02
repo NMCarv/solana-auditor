@@ -1,6 +1,13 @@
 ---
 name: solana-auditor
 description: Audit and research Solana smart contracts for security vulnerabilities and exploits. Use this skill whenever the user asks to audit, review, analyze, or security-test any Solana program — whether from a local repo, a deployed on-chain program, or an Anchor workspace. Also trigger when the user asks about Solana exploit patterns, vulnerability classes, CPI safety, PDA security, token validation, or wants to fuzz/test a Solana program. Covers the full audit lifecycle from reconnaissance through fuzzing to report generation. Even if the user just pastes Solana/Anchor code and asks "is this safe?", use this skill.
+allowed-tools:
+  - Read
+  - Grep
+  - Glob
+  - Bash
+  - Write
+  - Task
 ---
 
 # Solana Smart Contract Auditor
@@ -10,14 +17,44 @@ Your mental model: **Solana security is about validating accounts, authorities, 
 
 The most common Solana bugs are **account-validation bugs**, not classic EVM-style reentrancy.
 
+## When to use
+
+- User asks to audit, review, or security-test a Solana program (Anchor or native)
+- User pastes Solana/Anchor Rust code and asks "is this safe?" or similar
+- User asks about specific Solana vulnerability classes (CPI safety, PDA security, account validation)
+- User wants to fuzz or write exploit PoCs for a Solana program
+- User asks about real-world Solana exploits or attack patterns
+- User provides a deployed program address for on-chain analysis
+
+## When NOT to use
+
+- **EVM / Solidity / Vyper audits** — this skill is Solana-specific; do not apply SVM mental models to EVM code
+- **General Rust code review** — unless the code is a Solana program, use standard Rust review practices instead
+- **Frontend / client-side code** — except when checking for secret leakage or supply chain issues (§19)
+- **Token economics / tokenomics modeling** — this skill checks for technical exploits, not business model viability
+- **Deployment or DevOps tasks** — setting up validators, configuring RPC nodes, etc.
+
+## Rationalizations to reject
+
+These are shortcuts that lead to missed findings. Do not accept them.
+
+- **"Anchor handles that automatically"** — Anchor mitigates many classes, but only when constraints are correctly applied. Missing `has_one`, wrong seeds, or using `UncheckedAccount` bypasses all protections. Verify every constraint explicitly.
+- **"It's admin-only so it's low risk"** — admin key compromise (§20) is one of the most common real-world exploit vectors. Privileged instructions are *higher* priority, not lower.
+- **"The math can't overflow because values are small"** — without explicit checked math or range validation, this is an assumption about inputs the attacker controls. Always verify.
+- **"Nobody would pass that account combination"** — attackers craft arbitrary transactions. If the program doesn't reject it, assume it will be tried.
+- **"The program is non-upgradeable so it's safe"** — non-upgradeability only removes §17. All other 20 vulnerability classes still apply.
+- **"This CPI is to a trusted program"** — verify the target program ID is hardcoded and checked, not passed by the caller. "Trusted" means nothing if the attacker chooses the target (§3).
+- **"We'll fix it later / it's a known issue"** — document it as a finding with severity. "Known" does not mean "safe".
+
 ## Reference architecture
 
-Read the relevant reference file BEFORE starting each phase. Do not skip this.
+Read `references/cheatsheet.md` FIRST for a condensed overview. Only read full reference files when validating a specific finding or when a phase explicitly requires it.
 
 ```
 references/
-├── audit-workflow.md          # Full step-by-step procedure (read FIRST)
-├── vulnerability-taxonomy.md  # 18 vuln classes with code, detection, severity
+├── cheatsheet.md              # Condensed lookup table — read FIRST
+├── audit-workflow.md          # Full step-by-step procedure
+├── vulnerability-taxonomy.md  # 21 vuln classes with code, detection, severity
 ├── svm-runtime-model.md       # SVM internals, memory, accounts, CPI mechanics
 ├── rust-solana-pitfalls.md    # Integer math, borrows, unsafe, panics
 ├── crypto-primitives.md       # Ed25519, SHA-256, PDAs, ZK (Groth16, PLONK, STARKs)
