@@ -1,8 +1,0 @@
-{
-  "name": "solana-auditor",
-  "version": "1.0.0",
-  "description": "Audit Solana smart contracts for security vulnerabilities, exploit patterns, and unsafe account validation — covers Anchor and native programs.",
-  "author": "NMCarv",
-  "license": "MIT",
-  "source": "skills/solana-auditor"
-}

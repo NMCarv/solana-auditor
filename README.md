@@ -1,6 +1,6 @@
 # Solana Auditor
 
-A Claude Code skill that turns your AI assistant into a Solana smart contract security auditor. It systematically reviews Anchor and native Solana programs for vulnerabilities, generates proof-of-concept exploits, and produces structured audit reports.
+An [agent skill](https://github.com/vercel-labs/skills) that turns your AI assistant into a Solana smart contract security auditor. It systematically reviews Anchor and native Solana programs for vulnerabilities, generates proof-of-concept exploits, and produces structured audit reports. Works with Claude Code, Opencode, and any tool that speaks the open SKILL.md format.
 
 ## What it does
 
@@ -15,13 +15,17 @@ When you ask Claude Code to audit a Solana program, this skill activates and pro
 
 ## Installation
 
-### Claude Code plugin (recommended)
+### Vercel skills CLI (recommended)
 
-```
-/plugin install NMCarv/solana-auditor
+```bash
+npx skills add NMCarv/solana-auditor
 ```
 
-### Quick install (script)
+The CLI auto-detects your agent (Claude Code, Opencode, Codex, Cline, etc.) and installs the skill to the right location.
+
+### Manual install (script)
+
+If you prefer a direct clone:
 
 ```bash
 git clone https://github.com/NMCarv/solana-auditor.git
@@ -29,7 +33,7 @@ cd solana-auditor
 ./install.sh
 ```
 
-The installer auto-detects Claude Code or Opencode and copies the skill to the right location.
+The installer auto-detects Claude Code or Opencode and copies the skill there.
 
 ### Manual install (Claude Code)
 
@@ -75,8 +79,6 @@ This checks for required tools (Rust, Solana CLI, Anchor, cargo-audit, Trident),
 
 ```
 solana-auditor/
-├── .claude-plugin/
-│   └── plugin.json                   # Plugin metadata (name, version, author)
 ├── SKILL.md                          # Skill definition and workflow
 ├── references/
 │   ├── cheatsheet.md                 # Condensed lookup table — read first
